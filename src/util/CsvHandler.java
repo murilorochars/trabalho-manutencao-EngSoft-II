@@ -22,7 +22,7 @@ public class CsvHandler {
             while ((line = reader.readLine()) != null) {
                 if (header) { header = false; continue; } // skip header
                 if (!line.trim().isEmpty()) {
-                    products.add(Product.fromCsv(line.trim()));
+                    products.add(fromCsv(line.trim()));
                 }
             }
         } catch (IOException e) {
@@ -37,11 +37,22 @@ public class CsvHandler {
             try (PrintWriter writer = new PrintWriter(new FileWriter(filepath))) {
                 writer.println("id,name,category,price,quantity");
                 for (Product p : products) {
-                    writer.println(p.toCsv());
+                    writer.println(toCsv(p));
                 }
             }
         } catch (IOException e) {
             System.err.println("[CsvHandler] Failed to save: " + e.getMessage());
         }
+    }
+
+    // Metodos movidos da classe Product: converter para CSV e responsabilidade desta classe
+    private static String toCsv(Product p) {
+        return p.getId() + "," + p.getName() + "," + p.getCategory() + "," + p.getPrice() + "," + p.getQuantity();
+    }
+
+    private static Product fromCsv(String line) {
+        String[] parts = line.split(",");
+        return new Product(parts[0], parts[1], parts[2],
+                Double.parseDouble(parts[3]), Integer.parseInt(parts[4]));
     }
 }

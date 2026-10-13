@@ -35,16 +35,6 @@ public class Product {
         return quantity <= threshold;
     }
 
-    public String toCsv() {
-        return id + "," + name + "," + category + "," + price + "," + quantity;
-    }
-
-    public static Product fromCsv(String line) {
-        String[] parts = line.split(",");
-        return new Product(parts[0], parts[1], parts[2],
-                Double.parseDouble(parts[3]), Integer.parseInt(parts[4]));
-    }
-
     @Override
     public String toString() {
         return String.format("[%s] %-20s | Category: %-12s | Price: $%7.2f | Stock: %d",
