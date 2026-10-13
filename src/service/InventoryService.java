@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
  * Core business logic for inventory management.
  */
 public class InventoryService {
+    private static final int LIMITE_ESTOQUE_BAIXO = 5;
+    private static final String PREFIXO_ID = "P";
+
     private List<Product> products;
     private final ProductRepository repository;
     private int lowStockThreshold;
@@ -19,19 +22,19 @@ public class InventoryService {
 
     public InventoryService(ProductRepository repository) {
         this.repository = repository;
-        this.lowStockThreshold = 5;
+        this.lowStockThreshold = LIMITE_ESTOQUE_BAIXO;
         this.products = repository.findAll();
         this.nextId = computeNextId();
     }
 
     private int computeNextId() {
         return products.stream()
-                .mapToInt(p -> Integer.parseInt(p.getId().replace("P", "")))
+                .mapToInt(p -> Integer.parseInt(p.getId().replace(PREFIXO_ID, "")))
                 .max().orElse(0) + 1;
     }
 
     public Product addProduct(String name, String category, double price, int quantity) {
-        String id = String.format("P%03d", nextId++);
+        String id = String.format(PREFIXO_ID + "%03d", nextId++);
         Product p = new Product(id, name, category, price, quantity);
         products.add(p);
         save();
