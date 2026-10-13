@@ -1,3 +1,4 @@
+import repository.CsvProductRepository;
 import service.InventoryService;
 import model.Product;
 
@@ -15,7 +16,7 @@ public class Main {
     private static Scanner scanner;
 
     public static void main(String[] args) {
-        service = new InventoryService(DATA_FILE);
+        service = new InventoryService(new CsvProductRepository(DATA_FILE));
         scanner = new Scanner(System.in);
         System.out.println("==================================");
         System.out.println("    Java Inventory Manager v1.0   ");

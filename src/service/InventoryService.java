@@ -1,7 +1,7 @@
 package service;
 
 import model.Product;
-import util.CsvHandler;
+import repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
  */
 public class InventoryService {
     private List<Product> products;
-    private final String dataFile;
+    private final ProductRepository repository;
     private int lowStockThreshold;
     private int nextId;
 
-    public InventoryService(String dataFile) {
-        this.dataFile = dataFile;
+    public InventoryService(ProductRepository repository) {
+        this.repository = repository;
         this.lowStockThreshold = 5;
-        this.products = CsvHandler.load(dataFile);
+        this.products = repository.findAll();
         this.nextId = computeNextId();
     }
 
@@ -79,6 +79,6 @@ public class InventoryService {
     }
 
     private void save() {
-        CsvHandler.save(dataFile, products);
+        repository.saveAll(products);
     }
 }
