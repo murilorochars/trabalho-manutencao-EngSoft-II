@@ -1,22 +1,18 @@
 #!/bin/bash
-# Compile and run the Java Inventory Manager
+# Compila e executa o Java Inventory Manager (persistencia em SQLite)
 
 SRC_DIR="src"
 OUT_DIR="out"
+CP="lib/sqlite-jdbc-3.46.1.3.jar"
 
-echo "Compiling Java Inventory Manager..."
+echo "Compilando..."
 mkdir -p $OUT_DIR
-
-javac -sourcepath $SRC_DIR -d $OUT_DIR \
-    $SRC_DIR/model/Product.java \
-    $SRC_DIR/util/CsvHandler.java \
-    $SRC_DIR/service/InventoryService.java \
-    $SRC_DIR/Main.java
+javac -cp "$CP" -d $OUT_DIR -sourcepath $SRC_DIR $SRC_DIR/Main.java
 
 if [ $? -eq 0 ]; then
-    echo "Compilation successful. Launching app..."
-    java -cp $OUT_DIR Main
+    echo "Compilacao ok. Iniciando a aplicacao..."
+    java --enable-native-access=ALL-UNNAMED -cp "$OUT_DIR:$CP" Main
 else
-    echo "Compilation failed. Please check the errors above."
+    echo "Falha na compilacao."
     exit 1
 fi

@@ -1,4 +1,4 @@
-import repository.CsvProductRepository;
+import repository.SqliteProductRepository;
 import service.InventoryService;
 import model.Product;
 
@@ -11,12 +11,12 @@ import java.util.Scanner;
  * Entry point for the application.
  */
 public class Main {
-    private static final String DATA_FILE = "data/inventory.csv";
+    private static final String DATA_FILE = "data/inventory.db";
     private static InventoryService service;
     private static Scanner scanner;
 
     public static void main(String[] args) {
-        service = new InventoryService(new CsvProductRepository(DATA_FILE));
+        service = new InventoryService(new SqliteProductRepository(DATA_FILE));
         scanner = new Scanner(System.in);
         System.out.println("==================================");
         System.out.println("    Java Inventory Manager v1.0   ");
