@@ -32,6 +32,7 @@ public class Main {
                 case "4" -> removeProduct();
                 case "5" -> showLowStock();
                 case "6" -> showStats();
+                case "7" -> setLowStockThreshold();
                 case "0" -> running = false;
                 default  -> System.out.println("Invalid option. Try again.");
             }
@@ -48,6 +49,7 @@ public class Main {
         System.out.println("4. Remove product");
         System.out.println("5. Low-stock alerts");
         System.out.println("6. Inventory stats");
+        System.out.println("7. Set low-stock threshold");
         System.out.println("0. Exit");
         System.out.print("Choice: ");
     }
@@ -82,8 +84,22 @@ public class Main {
         System.out.println(ok ? "Removed successfully." : "Product not found.");
     }
 
+    private static void setLowStockThreshold() {
+        System.out.printf("Current threshold: %d%n", service.getLowStockThreshold());
+        System.out.print("New threshold: ");
+        try {
+            service.setLowStockThreshold(Integer.parseInt(scanner.nextLine().trim()));
+            System.out.printf("Threshold updated to %d.%n", service.getLowStockThreshold());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid value. Enter a whole number.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static void showLowStock() {
         List<Product> low = service.getLowStockProducts();
+        System.out.printf("Threshold: %d%n", service.getLowStockThreshold());
         if (low.isEmpty()) System.out.println("All products are sufficiently stocked.");
         else { System.out.println("LOW STOCK ALERT:"); low.forEach(System.out::println); }
     }

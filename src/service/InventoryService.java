@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-//teste//
 /**
  * Core business logic for inventory management.
  */
@@ -73,8 +72,17 @@ public class InventoryService {
         return new ArrayList<>(products);
     }
 
+    // O usuario pode definir o limite de estoque baixo. Valor negativo nao faz
+    // sentido para o inventario, entao e rejeitado.
     public void setLowStockThreshold(int threshold) {
+        if (threshold < 0) {
+            throw new IllegalArgumentException("O limite nao pode ser negativo.");
+        }
         this.lowStockThreshold = threshold;
+    }
+
+    public int getLowStockThreshold() {
+        return lowStockThreshold;
     }
 
     public double getTotalInventoryValue() {
